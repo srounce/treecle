@@ -1,26 +1,32 @@
 define([
-  '/js/lib/three.js/build/three.js'
+  'node'
+, '/js/lib/three.js/build/three.js'
 , 'lib/detector'
 ], function(
-  _THREE
+  Node
+, _THREE
 , _Detector
 ){
 
-return function TreecleApp()
+return function TreecleApp( structDef )
 {
   var _camera
     , _renderer
     , _rootScene
 
-  function TreecleApp()
+  function TreecleApp( structDef )
   {
-    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+    if( !structDef ) structDef = {};
 
-    _camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+    if ( !Detector.webgl ) Detector.addGetWebGLMessage();
+
+    _camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+
+    _rootScene = new THREE.Scene();
 
     initRenderer.call(this);
-
     initEvents.call(this);
+    initScene.call(this);
     initUpdateLoop.call(this);
   }
 
@@ -31,7 +37,9 @@ return function TreecleApp()
 
   TreecleApp.prototype.render = function render()
   {
+    _renderer.render(_rootScene, _camera);
     
+    setTimeout(this.tick.bind(this), 0);
   }
 
   function initEvents()
@@ -53,6 +61,13 @@ return function TreecleApp()
     this.domElement.style.position = 'absolute';
   }
 
+  function initScene()
+  {
+    var n = new Node();
+    n.add(new Node());
+    _rootScene.add(n);
+  }
+
   function initUpdateLoop()
   {
     this.tick(); 
@@ -63,7 +78,7 @@ return function TreecleApp()
     _renderer.setSize( window.innerWidth, window.innerHeight );
   }
 
-  return new TreecleApp;
+  return new TreecleApp( structDef )
 
 }
 

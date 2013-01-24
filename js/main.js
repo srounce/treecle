@@ -1,5 +1,8 @@
 requirejs.config({
   baseUrl : '/js',
+  paths : {
+    "text" : "/js/lib/require.text"
+  },
   shim : {
     '/js/lib/three.js/build/three.js': {
       exports: 'three',
@@ -12,10 +15,20 @@ requirejs.config({
 });
 
 
-define([ 'lib/domReady', 'treecle' ], function( domReady, Treecle ) {
+define([
+  'lib/domReady'
+, 'treecle'
+, 'text!../mock/structure.json'
+], function( 
+  domReady
+, Treecle
+, testStructure
+) {
 
 domReady(function() {
-  var app = new Treecle();
+
+  var app = new Treecle(JSON.parse(testStructure));
+
 })
 
 })
