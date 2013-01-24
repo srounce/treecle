@@ -1,4 +1,5 @@
 requirejs.config({
+  baseUrl : '/js',
   shim : {
     '/js/lib/three.js/build/three.js': {
       exports: 'three',
