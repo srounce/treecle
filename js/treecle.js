@@ -21,6 +21,7 @@ return function TreecleApp( structDef )
     if ( !Detector.webgl ) Detector.addGetWebGLMessage();
 
     _camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    _camera.position.z = -50;
 
     _rootScene = new THREE.Scene();
 
@@ -32,7 +33,7 @@ return function TreecleApp( structDef )
 
   TreecleApp.prototype.tick = function tick()
   {
-    requestAnimationFrame(this.render); 
+    requestAnimationFrame(this.render.bind(this)); 
   }
 
   TreecleApp.prototype.render = function render()

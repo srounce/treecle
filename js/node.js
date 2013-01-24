@@ -17,23 +17,31 @@ return function Node()
 {
   var _mesh
     , _material
+    , _children
   
-
   function Node()
   {
-    _material = new THREE.ShaderMaterial({
-      fragmentShader : fragmentShader
-    , vertexShader   : vertexShader
-    });
+    _children = new THREE.Scene();
+    sooper.prototype.add.call(this, _children);
 
-    _mesh = new THREE.Mesh(_geometry, _material);
+    // Use a sprite for now
+//  _material = new THREE.ShaderMaterial({
+//    fragmentShader : fragmentShader
+//  , vertexShader   : vertexShader
+//  });
+
+    _mesh = new THREE.Sprite(new THREE.SpriteMaterial({
+      color : 0xffffff
+    }));
+    sooper.prototype.add.call(this, _mesh);
   }
 
   Node.prototype = new THREE.Scene
 
   Node.prototype.add = function add( node )
   {
-    sooper.prototype.add.call(this, node);
+    sooper.prototype.add.call(_children, node)
+    node.parent = this
   }
 
   function childPosition()
