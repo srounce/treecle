@@ -5,11 +5,15 @@ requirejs.config({
   },
   shim : {
     '/js/lib/three.js/build/three.js': {
-      exports: 'three',
-      init: function () {
+      exports: 'three'
+    , init: function () {
         console.log("THREE, u thar brah? ", THREE);
         return THREE;
       }
+    },
+    '/js/lib/three-extra/three.trackballcontrols.js' : {
+      exports : 'threetrackballcontrols'
+    , deps : ['/js/lib/three.js/build/three.js']
     }
   }
 });
