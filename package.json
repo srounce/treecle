@@ -1,0 +1,19 @@
+{
+  "name": "treecle",
+  "version": "0.0.0",
+  "description": "",
+  "main": "bin/server",
+  "scripts": {
+    "start" : "node bin/server",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/srounce/treecle.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "mime": "1.2.x"
+  }
+}

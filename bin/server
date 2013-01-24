@@ -1,0 +1,176 @@
+#!/bin/env node
+
+var http = require('http')
+  , path = require('path')
+  , url = require('url')
+  , fs = require('fs')
+  , mime = require('mime')
+  , StatMan
+  , server;
+
+StatMan = function( server )
+{
+  var events = {}
+    , bindEvents;
+
+  this.server = server;
+  this.baseDir = path.resolve(process.cwd());
+
+  events.server = {
+    request : function( req, res ) {
+      var uri = url.parse(req.url).pathname
+        , fileName = path.join(this.baseDir, uri);
+
+      console.info(uri);
+
+      res.render = function( markup, status ) {
+        var renderBase = uri;
+        if(renderBase.substr(-1) !== "/") {
+          renderBase += "/";
+        }
+
+        if( !status) status = 200;
+
+        this.writeHead(status, {
+          "Content-Type" : 'text/html'
+        });
+        this.write(
+"<!doctype html>" +
+"<html>" +
+  "<head>" +
+    "<base href=\""+renderBase+"\">" +
+    "<style type=\"text/css\">" +
+      "@charset \"utf-8\";" +
+      "html { font:100%; }" +
+      "body { font:1em/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing:1px; color:#444; padding:5em; }" +
+      "h1, h2, h3, h4, h5, h6 { letter-spacing:0; }" +
+      "h1 { margin-bottom:0; text-indent:-24px; margin-left:48px; }" +
+      "ul { margin:0; } li { list-style:none; margin:3px 0px; } li:before { content:\"\\2523\"; padding-right:4px; } li:last-child:before { content:\"\\2517\"; }" +
+      "a, a:link, a:active, a:hover, a:visited { text-decoration:none; color:#333; } " +
+    "</style>" +
+  "</head>" +
+  "<body>" +
+    markup +
+  "</body>" +
+"</html>", 'utf8'
+        );
+        this.end();
+
+      }.bind(res);
+
+      fs.stat(fileName, function( err, stats ) {
+        var resData = null
+          , readPath;
+
+        if( err ) {
+          return this.error(res, 404);
+        }
+
+        if( stats.isFile() ) {
+          var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+          var mimeType = mime.lookup(ext);
+
+          fs.readFile(fileName, 'binary', function( err, data ) {
+            if(err) {
+              return this.error(res, 500, err);
+            }
+
+            res.setHeader('Content-Type', mimeType);
+
+            res.writeHead(200)
+            res.write(data, 'binary');
+            res.end();
+          });
+        }
+
+        if(stats.isDirectory()) {
+          fs.exists(readPath = path.join(fileName, '/index.html'), function( exists ) {
+            if( exists ) {
+              fs.readFile(readPath, function( err, data ) {
+                if(err) {
+                  return this.error(res, 500, err);
+                }
+
+                res.writeHead(200)
+                res.write(data, 'binary');
+                res.end();
+              });
+            } else {
+              fs.readdir(fileName, function(err, files) {
+                var fileList = "",
+                    done;
+
+                done = function done()
+                {
+                  return res.render("<h1>Index of: <br />"+fileName.replace(process.cwd(), '')+"</h1><ul>"+fileList+"</ul>");
+                };
+
+                if(uri !== "/") {
+                  fileList += "<li><a href=\"..\">&lt;parent directory&gt;</a></li>";
+
+                  if( files.length === 0 ) {
+                    return done();
+                  }
+                }
+
+                files.forEach(function(file, index, list) {
+                  fileList += "<li><a href=\""+file+"\">"+file+(fs.statSync(path.join(fileName, file)).isDirectory() ? '/' : '' )+"</a></li>";
+
+                  if(index + 1 === list.length) {
+                    return done();
+                  }
+                });
+              });
+            }
+          });
+        }
+      }.bind(this));
+
+    }.bind(this)
+  };
+
+  bindEvents = function( eventMap )
+  {
+    this.server.on('request', eventMap.server.request);
+  };
+
+  bindEvents.apply(this, [events]);
+};
+
+StatMan.prototype.listen = function( port )
+{
+  if(this.server) {
+    this.server.listen(parseInt(port, 10));
+  }
+
+  console.info("Statman up and running at: http://" + require('os').hostname() + ":" + port);
+};
+
+StatMan.prototype.error = function( response, code, error )
+{
+  var output = "";
+
+  if(code === undefined) code = 500;
+
+  output += "<h1>"+code+"</h1>";
+
+  switch( code ) {
+
+    case 404:
+      output += "<h2>Resource not found</h2>";
+      output += "<p>The resource requested could not be found. :(</p>";
+      break;
+
+    default:
+      output += "<h2>Server error</h2>";
+      output += "<p>An error occured =S</p><pre>"+new Error(error).stack+"</pre>";
+      break;
+  }
+
+  return response.render(output, code);
+};
+
+server = new StatMan(http.createServer());
+
+//server.listen( 8888, require('os').hostname() );
+server.listen( 8888, '0.0.0.0' );
