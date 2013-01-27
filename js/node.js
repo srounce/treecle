@@ -2,7 +2,7 @@ define([
   'text!../shaders/node.vert'
 , 'text!../shaders/node.frag'
 , 'linematerial'
-, '/js/lib/three.js/build/three.js'
+, '<lib/three>'
 ], function(
   vertexShader
 , fragmentShader
@@ -11,11 +11,11 @@ define([
 ){
 
 const MAX_CHILD_DISTANCE = 200;
-const MIN_CHILD_DISTANCE = 50;
+const MIN_CHILD_DISTANCE = 75;
 
 var sooper = THREE.Mesh;
-var _geometry = new THREE.PlaneGeometry(25, 25, 4, 4)
-  , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/dummy.png')
+var _geometry = new THREE.PlaneGeometry(35, 35, 4, 4)
+  , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/coolface.png')
 
 return function Node( structure )
 {
@@ -27,8 +27,12 @@ return function Node( structure )
   function Node( structure )
   {
     _material = new THREE.ShaderMaterial({
-      fragmentShader : fragmentShader
-    , vertexShader   : vertexShader
+      uniforms        : {
+        diffuse : { type: "t", value : _dummytex }
+      }
+    , fragmentShader  : fragmentShader
+    , vertexShader    : vertexShader
+    , alphaTest       : true
     });
     sooper.call(this, _geometry, _material);
 
@@ -56,7 +60,6 @@ return function Node( structure )
   {
     structureDefinition.children.forEach(function( struct ) {
       var n = new Node(struct);
-      console.log(struct);
       this.add(n);
     }.bind(this));
   }

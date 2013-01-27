@@ -1,25 +1,28 @@
 requirejs.config({
-  baseUrl : '/js',
+  baseUrl : '/src/',
   paths : {
-    "text" : "/js/lib/require.text"
+    "text"  : "lib/require.text"
+  , "<lib/three>" : "lib/three.js/build/three"
+  , "<lib/three-extra/trackballcontrols>" : "lib/three-extra/three.trackballcontrols"
   },
   shim : {
-    '/js/lib/three.js/build/three.js': {
+    '<lib/three>': {
       exports: 'three'
     , init: function () {
         console.log("THREE, u thar brah? ", THREE);
         return THREE;
       }
     },
-    '/js/lib/three-extra/three.trackballcontrols.js' : {
+    '<lib/three-extra/trackballcontrols>' : {
       exports : 'threetrackballcontrols'
-    , deps : ['/js/lib/three.js/build/three.js']
+    , deps : ['<lib/three>']
     }
-  }
+  },
+  out : '../build/treecle.app.js'
 });
 
 
-define([
+define('main', [
   'lib/domReady'
 , 'treecle'
 , 'text!../mock/structure.json'

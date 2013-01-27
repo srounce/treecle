@@ -4,7 +4,7 @@
   "description": "",
   "main": "bin/server",
   "scripts": {
-    "start" : "node bin/server",
+    "start": "node bin/server",
     "test": ""
   },
   "repository": {
@@ -14,6 +14,7 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "mime": "1.2.x"
+    "mime": "1.2.x",
+    "requirejs": "~2.1.4"
   }
 }

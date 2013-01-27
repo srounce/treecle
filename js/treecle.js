@@ -1,7 +1,7 @@
 define([
   'nodering'
-, '/js/lib/three.js/build/three.js'
-, '/js/lib/three-extra/three.trackballcontrols.js'
+, '<lib/three>'
+, '<lib/three-extra/trackballcontrols>'
 , 'lib/detector'
 ], function(
   NodeRing
@@ -28,7 +28,8 @@ return function TreecleApp( structDef )
     _camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     _trackballControl = new THREE.TrackballControls(_camera);
-    _trackballControl.rotateSpeed = 0.1;
+    _trackballControl.rotateSpeed = 0.01;
+    _trackballControl.dynamicDampingFactor = 0.3;
     _trackballControl.noZoom = true;
     _trackballControl.noPan = true;
 

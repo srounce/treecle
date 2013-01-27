@@ -1,7 +1,7 @@
 define([
   'node'
 , 'linematerial'
-, '/js/lib/three.js/build/three.js'
+, '<lib/three>'
 ], function(
   Node
 , LineMaterial
@@ -27,17 +27,24 @@ return function NodeRing( structure )
   NodeRing.prototype.load = function( structure )
   {
     _structure = structure || [];
+    console.group('arc indexes');
     _structure.forEach(processNodeDef.bind(this));
+    console.groupEnd('arc indexes');
   }
 
   function processNodeDef( nodeDef, index )
   {
-    var node = new Node(nodeDef);
-    var pos = calculateDistribution( index );
+    var node = new Node(nodeDef)
+      , pos = calculateDistribution( index )
+      , line;
 
     node.position.set(pos.x, pos.y, pos.z);
-
     this.add(node);
+
+console.log(index-1 - _structure.length % _structure.length);
+
+    line = createConnection(calculateDistribution(index-1 - _structure.length % _structure.length), pos);
+    this.add(line);
   }
 
   function calculateDistribution( index )
