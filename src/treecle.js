@@ -23,8 +23,8 @@ return function TreecleApp( structDef )
 
     if ( !Detector.webgl ) Detector.addGetWebGLMessage();
 
-    _camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-    _camera.position.set(250, 250, -250);
+    _camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
+    _camera.position.set(100, 100, -100);
     _camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     _trackballControl = new THREE.TrackballControls(_camera);

@@ -1,20 +1,23 @@
 define([
-  'text!../shaders/node.vert'
+  'nodespritetexture'
+, 'text!../shaders/node.vert'
 , 'text!../shaders/node.frag'
 , 'linematerial'
 , '<lib/three>'
 ], function(
-  vertexShader
+  NodeSpriteTexture
+, vertexShader
 , fragmentShader
 , LineMaterial
 , _THREE
 ){
 
-const MAX_CHILD_DISTANCE = 200;
-const MIN_CHILD_DISTANCE = 75;
+const MAX_CHILD_DISTANCE = 75;
+const MIN_CHILD_DISTANCE = 50;
+const SIZE = 50;
 
 var sooper = THREE.Mesh;
-var _geometry = new THREE.PlaneGeometry(35, 35, 4, 4)
+var _geometry = new THREE.PlaneGeometry(SIZE, SIZE, 4, 4)
   , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/coolface.png')
 
 return function Node( structure )
@@ -23,12 +26,14 @@ return function Node( structure )
     , _material
     , _childNodes
     , _childPositions
+    , _diffuse
   
   function Node( structure )
   {
+    _diffuse = new NodeSpriteTexture(structure.name);
     _material = new THREE.ShaderMaterial({
       uniforms        : {
-        diffuse : { type: "t", value : _dummytex }
+        diffuse : { type: "t", value : _diffuse.map }
       }
     , fragmentShader  : fragmentShader
     , vertexShader    : vertexShader
@@ -67,15 +72,21 @@ return function Node( structure )
   function childPosition()
   {
     return new THREE.Vector3(
-      randomPosition(),
-      randomPosition(),
-      randomPosition()
+      randomPosition(true),
+      randomPosition(true),
+      randomPosition(true)
     );
   }
 
-  function randomPosition()
+  function randomPosition(canNeg)
   {
-    return Math.max(Math.random() * MAX_CHILD_DISTANCE, MIN_CHILD_DISTANCE) - MAX_CHILD_DISTANCE / 2; 
+    var dist = Math.min(Math.random() * MAX_CHILD_DISTANCE / 2 + MIN_CHILD_DISTANCE, MAX_CHILD_DISTANCE) - MAX_CHILD_DISTANCE / 2; 
+console.log(dist);
+    if(canNeg) {
+      return dist;
+    } else {
+      return Math.abs(dist);
+    }
   }
 
   return new Node(structure);

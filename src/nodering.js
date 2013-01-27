@@ -14,7 +14,7 @@ return function NodeRing( structure )
 {
   var _connectionLines = []
     , _structure = []
-    , _radius = 275;
+    , _radius = 100;
      
   function NodeRing( structure, radius )
   {
@@ -27,21 +27,23 @@ return function NodeRing( structure )
   NodeRing.prototype.load = function( structure )
   {
     _structure = structure || [];
-    console.group('arc indexes');
+//console.group('arc indexes');
     _structure.forEach(processNodeDef.bind(this));
-    console.groupEnd('arc indexes');
+//console.groupEnd('arc indexes');
   }
 
   function processNodeDef( nodeDef, index )
   {
     var node = new Node(nodeDef)
       , pos = calculateDistribution( index )
-      , line;
+      , line
+      , rot = pos.clone().normalize()
 
     node.position.set(pos.x, pos.y, pos.z);
+    node.rotation.setY(Math.TAU / _structure.length * index);
     this.add(node);
 
-console.log(index-1 - _structure.length % _structure.length);
+//console.log(index-1 - _structure.length % _structure.length);
 
     line = createConnection(calculateDistribution(index-1 - _structure.length % _structure.length), pos);
     this.add(line);
@@ -49,7 +51,7 @@ console.log(index-1 - _structure.length % _structure.length);
 
   function calculateDistribution( index )
   {
-    var angle = (Math.TAU / _structure.length) * index;
+    var angle = Math.TAU / _structure.length * index;
 
     return new THREE.Vector3(
         _radius * Math.cos(angle)
