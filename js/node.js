@@ -1,21 +1,21 @@
 define([
   'text!../shaders/node.vert'
 , 'text!../shaders/node.frag'
+, 'linematerial'
 , '/js/lib/three.js/build/three.js'
 ], function(
   vertexShader
 , fragmentShader
+, LineMaterial
 , _THREE
 ){
 
+const MAX_CHILD_DISTANCE = 200;
 const MIN_CHILD_DISTANCE = 50;
 
 var sooper = THREE.Mesh;
 var _geometry = new THREE.PlaneGeometry(25, 25, 4, 4)
   , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/dummy.png')
-  , _lineMaterial = new THREE.LineBasicMaterial({
-        color: 0xBBBBBB
-    });
 
 return function Node( structure )
 {
@@ -26,7 +26,6 @@ return function Node( structure )
   
   function Node( structure )
   {
-    // Use a sprite for now
     _material = new THREE.ShaderMaterial({
       fragmentShader : fragmentShader
     , vertexShader   : vertexShader
@@ -48,7 +47,7 @@ return function Node( structure )
       geom.vertices.push(new THREE.Vector3());
       geom.vertices.push(nodePos);
       return geom;
-    }()), _lineMaterial));
+    }()), LineMaterial));
     sooper.prototype.add.call(this, node);
     node.position = nodePos;
   }
@@ -65,10 +64,15 @@ return function Node( structure )
   function childPosition()
   {
     return new THREE.Vector3(
-      Math.max(Math.random() * 400, MIN_CHILD_DISTANCE) - 200,
-      Math.max(Math.random() * 400, MIN_CHILD_DISTANCE) - 200,
-      Math.max(Math.random() * 400, MIN_CHILD_DISTANCE) - 200 
+      randomPosition(),
+      randomPosition(),
+      randomPosition()
     );
+  }
+
+  function randomPosition()
+  {
+    return Math.max(Math.random() * MAX_CHILD_DISTANCE, MIN_CHILD_DISTANCE) - MAX_CHILD_DISTANCE / 2; 
   }
 
   return new Node(structure);

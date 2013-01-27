@@ -31,6 +31,8 @@ define([
 
 domReady(function() {
 
+  Math.TAU = Math.PI * 2;
+
   var app = new Treecle(JSON.parse(testStructure));
 
 })
