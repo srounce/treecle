@@ -11,42 +11,55 @@ define([
 const MIN_CHILD_DISTANCE = 50;
 
 var sooper = THREE.Mesh;
-var _geometry = new THREE.PlaneGeometry(25, 25, 4, 4);
-var _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/dummy.png')
+var _geometry = new THREE.PlaneGeometry(25, 25, 4, 4)
+  , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/dummy.png')
+  , _lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xBBBBBB
+    });
 
-return function Node()
+return function Node( structure )
 {
   var _mesh
     , _material
     , _childNodes
     , _childPositions
   
-  function Node()
+  function Node( structure )
   {
     // Use a sprite for now
-//  _material = new THREE.ShaderMaterial({
-//    fragmentShader : fragmentShader
-//  , vertexShader   : vertexShader
-//  });
+    _material = new THREE.ShaderMaterial({
+      fragmentShader : fragmentShader
+    , vertexShader   : vertexShader
+    });
+    sooper.call(this, _geometry, _material);
 
-    sooper.call(this, _geometry, new THREE.MeshBasicMaterial({
-      color : 0xffffff
-    , map   : _dummytex
-    , fog   : false
-    , side  : THREE.DoubleSide
-    }));
-//  _mesh.position.set(100, 100, 1);
-//  _mesh.scale.set(100, 100, 1);
+    processStructureDefinition.call(this, structure);
 
     sooper.prototype.add.call(this, _mesh);
   }
 
   Node.prototype = new sooper;
 
-  Node.prototype.add = function add( node )
+  Node.prototype.add = function( node )
   {
+    var nodePos = childPosition();
+    sooper.prototype.add.call(this, new THREE.Line((function() {
+      var geom = new THREE.Geometry();
+      geom.vertices.push(new THREE.Vector3());
+      geom.vertices.push(nodePos);
+      return geom;
+    }()), _lineMaterial));
     sooper.prototype.add.call(this, node);
-    node.position = childPosition();
+    node.position = nodePos;
+  }
+
+  function processStructureDefinition( structureDefinition )
+  {
+    structureDefinition.children.forEach(function( struct ) {
+      var n = new Node(struct);
+      console.log(struct);
+      this.add(n);
+    }.bind(this));
   }
 
   function childPosition()
@@ -58,7 +71,7 @@ return function Node()
     );
   }
 
-  return new Node
+  return new Node(structure);
 
 }
 

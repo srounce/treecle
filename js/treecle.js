@@ -29,10 +29,8 @@ return function TreecleApp( structDef )
 
     _trackballControl = new THREE.TrackballControls(_camera);
     _trackballControl.rotateSpeed = 0.6;
-    _trackballControl.dynamicDampingFactor = 0.9;
     _trackballControl.noZoom = true;
     _trackballControl.noPan = true;
-
 
     _rootScene = new THREE.Scene();
 
@@ -42,17 +40,18 @@ return function TreecleApp( structDef )
     initUpdateLoop.call(this);
   }
 
-  TreecleApp.prototype.update = function update()
+  TreecleApp.prototype.update = function()
   {
     requestAnimationFrame(this.render.bind(this)); 
     _trackballControl.update();
   }
 
-  TreecleApp.prototype.render = function render()
+  TreecleApp.prototype.render = function()
   {
     _renderer.render(_rootScene, _camera);
     
-    setTimeout(this.update.bind(this), 0);
+//  setTimeout(this.update.bind(this), 0);
+    this.update();
   }
 
   function initEvents()
@@ -76,19 +75,7 @@ return function TreecleApp( structDef )
 
   function initScene( sceneDef )
   {
-    //  n = new THREE.Sprite(new THREE.SpriteMaterial({
-//    map   : tex
-//  , color : 0xffffffcamera.updateProjectionMatrix();
-//  , fog   : false
-//  }));
-//  n.position.set(100, 100, 1);
-//  n.scale.set(100, 100, 1);
-    n = new Node();
-    n2 = new Node();
-    n.add(n2);
-    n2.add(new Node());
-    n2.add(new Node());
-    n.add(new Node());
+    var n = new Node({ children : sceneDef });
     _rootScene.add(n);
   }
 
