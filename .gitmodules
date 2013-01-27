@@ -1,3 +1,6 @@
 [submodule "src/lib/three.js"]
 	path = src/lib/three.js
 	url = git://github.com/mrdoob/three.js.git
+[submodule "src/lib/tween.js"]
+	path = src/lib/tween.js
+	url = git://github.com/sole/tween.js.git
