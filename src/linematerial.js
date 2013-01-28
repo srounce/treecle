@@ -6,8 +6,9 @@ define([
 
 var lineMat = new THREE.LineBasicMaterial({
   color   : 0xFFFFFF
-, opacity : 0.7
+, opacity : 0.6
 , transparent : true
+, linewidth : 2
 });
 
 return lineMat;

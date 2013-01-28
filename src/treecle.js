@@ -76,6 +76,8 @@ return function TreecleApp( structDef )
 
   function initScene( sceneDef )
   {
+    _rootScene.fog = new THREE.Fog(0x0d1929, 50.0, 250);
+
     var n = new NodeRing(sceneDef);
     _rootScene.add(n);
   }
