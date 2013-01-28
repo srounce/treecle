@@ -65,6 +65,7 @@ return function Node( structure )
   {
     structureDefinition.children.forEach(function( struct ) {
       var n = new Node(struct);
+      n.scale.multiplyScalar(0.25);
       this.add(n);
     }.bind(this));
   }
@@ -81,7 +82,7 @@ return function Node( structure )
   function randomPosition(canNeg)
   {
     var dist = Math.min((Math.random() * MAX_CHILD_DISTANCE * 2) - MAX_CHILD_DISTANCE, MIN_CHILD_DISTANCE);
-console.log(dist);
+//console.log(dist);
     if(canNeg) {
       return dist;
     } else {
