@@ -13,7 +13,7 @@ define([
 ){
 
 const MAX_CHILD_DISTANCE = 75;
-const MIN_CHILD_DISTANCE = 50;
+const MIN_CHILD_DISTANCE = 35;
 const SIZE = 50;
 
 var sooper = THREE.Mesh;
@@ -74,13 +74,13 @@ return function Node( structure )
     return new THREE.Vector3(
       randomPosition(true),
       randomPosition(true),
-      randomPosition(true)
+      randomPosition(false) / 2
     );
   }
 
   function randomPosition(canNeg)
   {
-    var dist = Math.min(Math.random() * MAX_CHILD_DISTANCE / 2 + MIN_CHILD_DISTANCE, MAX_CHILD_DISTANCE) - MAX_CHILD_DISTANCE / 2; 
+    var dist = Math.min((Math.random() * MAX_CHILD_DISTANCE * 2) - MAX_CHILD_DISTANCE, MIN_CHILD_DISTANCE);
 console.log(dist);
     if(canNeg) {
       return dist;
