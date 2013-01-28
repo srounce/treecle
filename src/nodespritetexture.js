@@ -4,7 +4,7 @@ define([
   _THREE
 ) {
 
-return function NodeSpriteTexture( title )
+return function NodeSpriteTexture( title, imageURL )
 {
   var _canvas
     , _ctx
@@ -14,6 +14,7 @@ return function NodeSpriteTexture( title )
     , _height = 512
 
     , _title = ""
+    , _imageURL = "/assets/misc/coolface.png"
 
   function NodeSpriteTexture( title )
   {
@@ -43,24 +44,39 @@ return function NodeSpriteTexture( title )
       , angle
       , gradient = _ctx.createLinearGradient(0, centerY/2, 0, _height);
 
-    gradient.addColorStop(0, '#44a3DF');
-    gradient.addColorStop(1, '#1d2949');
+    gradient.addColorStop(0, '#1e3048');
+    gradient.addColorStop(1, '#122032');
 
     _ctx.strokeStyle = "#FFF200";
 
     _ctx.fillStyle = gradient;
 
-    _ctx.beginPath();
+//  _ctx.save();
+
+    var img = new Image();
+    img.onload = function(ev) {
+      _ctx.beginPath();
+      drawPolygon(_ctx, 6, radius, centerX, centerY);
+      _ctx.clip();
+      _ctx.fill();
+      _ctx.drawImage(img, centerX/2, centerY/2, _width - centerX, _height - centerY);
+      _ctx.closePath();
+      _texture.needsUpdate = true;
+    }
+    img.src = _imageURL;
 
 //  _ctx.moveTo(0+5, 0+5);
 //  _ctx.lineTo(centerX, _height-5);
 //  _ctx.lineTo(_width-5, 0+5);
-  
+
+//  _ctx.restore();
+
+    _ctx.beginPath();
     drawPolygon(_ctx, 6, radius, centerX, centerY);
+    _ctx.closePath();
 
     _ctx.lineWidth = 7;
     _ctx.stroke();
-    _ctx.fill();
 
     _ctx.fillStyle = '#FFFFFF';
 //  _ctx.textAlign = 'right';
@@ -72,7 +88,7 @@ return function NodeSpriteTexture( title )
   {
     _ctx.moveTo(centerX + radius * Math.cos(0), centerY + radius * Math.sin(0));
 
-    for(var i=1, MAX=sides; i <= MAX+1; i++) {
+    for(var i=1, MAX=sides; i <= MAX; i++) {
       angle = i * Math.TAU / MAX;
       _ctx.lineTo( centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle) );
     }

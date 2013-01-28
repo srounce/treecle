@@ -76,6 +76,7 @@ StatMan = function( server )
             }
 
             res.setHeader('Content-Type', mimeType);
+            res.setHeader('Cache-Control', 'max-age=7200, must-revalidate');
 
             res.writeHead(200)
             res.write(data, 'binary');
