@@ -20,6 +20,12 @@ return function NodeRing( structure )
   {
     _radius = radius || _radius;
     this.load(structure);
+
+    Object.defineProperty(NodeRing.prototype, 'radius', {
+      get : function() {
+        return _radius;
+      }
+    });
   }
 
   NodeRing.prototype = new sooper;

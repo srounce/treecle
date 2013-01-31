@@ -3,12 +3,14 @@ define([
 , 'text!../shaders/node.vert'
 , 'text!../shaders/node.frag'
 , 'linematerial'
+, 'eventmanager'
 , '<lib/three>'
 ], function(
   NodeSpriteTexture
 , vertexShader
 , fragmentShader
 , LineMaterial
+, EventManager
 , _THREE
 ){
 
@@ -42,8 +44,8 @@ return function Node( structure )
     sooper.call(this, _geometry, _material);
 
     processStructureDefinition.call(this, structure);
-
-    sooper.prototype.add.call(this, _mesh);
+    
+    bindEvents.call(this);
   }
 
   Node.prototype = new sooper;
@@ -61,11 +63,17 @@ return function Node( structure )
     node.position = nodePos;
   }
 
+  function bindEvents()
+  {
+    EventManager.getInstance().bind(this, 'mouseover', evt_mouseover);
+    EventManager.getInstance().bind(this, 'mouseout', evt_mouseout);
+    EventManager.getInstance().bind(this, 'mousedown', evt_click);
+  }
+
   function processStructureDefinition( structureDefinition )
   {
     structureDefinition.children.forEach(function( struct ) {
       var n = new Node(struct);
-      n.scale.multiplyScalar(0.25);
       this.add(n);
     }.bind(this));
   }
@@ -89,6 +97,25 @@ return function Node( structure )
       return Math.abs(dist);
     }
   }
+
+  function evt_mouseover( ev )
+  {
+    document.body.style.cursor = "pointer";
+//console.log(this, ev, arguments);
+  }  
+  
+  function evt_mouseout( ev )
+  {
+    document.body.style.cursor = null;
+//console.log(this, ev, arguments);
+  }  
+
+  function evt_click( ev )
+  {
+    var worldObjPos = (new THREE.Vector3).applyProjection(ev.target.matrixWorld);
+    EventManager.getCamera().position.set(worldObjPos.x - 50, worldObjPos.y - 50, worldObjPos.z - 50); 
+    EventManager.getCamera().lookAt(worldObjPos); 
+  }  
 
   return new Node(structure);
 

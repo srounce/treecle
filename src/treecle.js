@@ -1,10 +1,12 @@
 define([
   'nodering'
+, 'eventmanager'
 , '<lib/three>'
 , '<lib/three-extra/trackballcontrols>'
 , 'lib/detector'
 ], function(
   NodeRing
+, EventManager
 , _THREE
 , _THREETrackballControls
 , _Detector
@@ -26,6 +28,8 @@ return function TreecleApp( structDef )
     _camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
     _camera.position.set(100, 100, -100);
     _camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    EventManager.setCamera( _camera );
 
     _trackballControl = new THREE.TrackballControls(_camera);
     _trackballControl.rotateSpeed = 0.01;
