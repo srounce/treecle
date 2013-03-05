@@ -4,17 +4,25 @@ requirejs.config({
     "text"  : "lib/require.text"
   , "<lib/three>" : "lib/three.js/build/three"
   , "<lib/three-extra/trackballcontrols>" : "lib/three-extra/three.trackballcontrols"
+  , "<lib/three-extra/domevent>" : "lib/three-extra/threex.domevent"
   , "<lib/tween>" : "lib/tween.js/build.tween.min"
   },
   shim : {
     '<lib/three>': {
       exports: 'three'
-    },
-    '<lib/tween>': {
+    } 
+  , '<lib/leapmotion>': {
+      exports: 'leapmotion'
+    } 
+  , '<lib/tween>': {
       exports: 'tween'
-    },
-    '<lib/three-extra/trackballcontrols>' : {
+    } 
+  , '<lib/three-extra/trackballcontrols>' : {
       exports : 'threetrackballcontrols'
+    , deps : ['<lib/three>']
+    }
+  , '<lib/three-extra/domevent>' : {
+      exports : 'threedomevent'
     , deps : ['<lib/three>']
     }
   },

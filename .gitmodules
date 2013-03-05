@@ -4,3 +4,6 @@
 [submodule "src/lib/tween.js"]
 	path = src/lib/tween.js
 	url = git://github.com/sole/tween.js.git
+[submodule "src/lib/leapjs"]
+	path = src/lib/leapjs
+	url = git@github.com:leapmotion/leapjs.git
