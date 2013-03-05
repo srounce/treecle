@@ -1,15 +1,17 @@
 define([
   'nodering'
 , 'eventmanager'
+, 'util'
 , '<lib/three>'
-, '<lib/three-extra/trackballcontrols>'
 , 'lib/detector'
+, '<lib/leapjs>'
 ], function(
   NodeRing
 , EventManager
+, Util
 , _THREE
-, _THREETrackballControls
 , _Detector
+, _leapjs
 ){
 
 return function TreecleApp( structDef )
@@ -17,11 +19,15 @@ return function TreecleApp( structDef )
   var _camera
     , _renderer
     , _rootScene
-    , _trackballControl
+
+    , _lmVelocityScale = .01
+    , _diffFrame = null
+    , _camTarget = new THREE.Vector3()
+    , radian = Math.PI / 180
 
   function TreecleApp( sceneDef )
   {
-    if( !structDef ) sceneDef = {};
+    if ( !structDef ) sceneDef = {};
 
     if ( !Detector.webgl ) Detector.addGetWebGLMessage();
 
@@ -31,12 +37,6 @@ return function TreecleApp( structDef )
 
     EventManager.setCamera( _camera );
 
-    _trackballControl = new THREE.TrackballControls(_camera);
-    _trackballControl.rotateSpeed = 0.01;
-    _trackballControl.dynamicDampingFactor = 0.3;
-    _trackballControl.noZoom = true;
-    _trackballControl.noPan = true;
-
     _rootScene = new THREE.Scene();
 
     initRenderer.call(this);
@@ -45,18 +45,39 @@ return function TreecleApp( structDef )
     initUpdateLoop.call(this);
   }
 
-  TreecleApp.prototype.update = function()
+  TreecleApp.prototype.update = function( frame )
   {
-    requestAnimationFrame(this.render.bind(this)); 
-    _trackballControl.update();
+    var _lmRotate = { x : 0, y : 0, z :0 }
+
+    if( frame.valid ) {
+      if( _diffFrame ===  null ) {
+        _diffFrame = frame
+      }
+      var frameTrans = _diffFrame.translation(frame)
+      var camRadius = _camera.position.distanceTo(_camTarget)
+
+      //console.log( frame.hands.palmVelocity );
+//if(frameTrans[0] > 0) {
+  //console.log(frameTrans[0]
+             //,frameTrans[1]
+             //,frameTrans[2])
+//}
+      var rotX = frameTrans[0]
+      var rotY = -( Util.map(frameTrans[0], -300, 300, -179, 180) )
+
+      _lmRotate.x = camRadius * Math.sin(rotY * radian) * Math.cos(rotX * radian)
+      _lmRotate.z = camRadius * Math.sin(rotX * radian) * Math.cos(rotY * radian)
+      _lmRotate.y = camRadius * Math.cos(rotY * radian)
+
+      _camera.rotation.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
+    }
+
+    this.render.call(this, frame);
   }
 
-  TreecleApp.prototype.render = function()
+  TreecleApp.prototype.render = function( frame )
   {
     _renderer.render(_rootScene, _camera);
-    
-//  setTimeout(this.update.bind(this), 0);
-    this.update();
   }
 
   function initEvents()
@@ -88,14 +109,12 @@ return function TreecleApp( structDef )
 
   function initUpdateLoop()
   {
-    this.update(); 
+    Leap.loop( this.update.bind(this) )
   }
 
   function evt_winResize( ev )
   {
     _renderer.setSize( window.innerWidth, window.innerHeight );
-
-    _trackballControl.handleResize();
 
     _camera.aspect = window.innerWidth / window.innerHeight;
     _camera.updateProjectionMatrix();

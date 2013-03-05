@@ -6,13 +6,14 @@ requirejs.config({
   , "<lib/three-extra/trackballcontrols>" : "lib/three-extra/three.trackballcontrols"
   , "<lib/three-extra/domevent>" : "lib/three-extra/threex.domevent"
   , "<lib/tween>" : "lib/tween.js/build.tween.min"
+  , "<lib/leapjs>" : "lib/leapjs/leap"
   },
   shim : {
     '<lib/three>': {
       exports: 'three'
     } 
-  , '<lib/leapmotion>': {
-      exports: 'leapmotion'
+  , '<lib/leapjs>': {
+      exports: 'leapjs'
     } 
   , '<lib/tween>': {
       exports: 'tween'
@@ -43,6 +44,7 @@ define('main', [
 domReady(function() {
 
   Math.TAU = Math.PI * 2;
+  Math.HALF_PI = Math.PI / 2;
 
   var app = new Treecle(JSON.parse(testStructure));
 
