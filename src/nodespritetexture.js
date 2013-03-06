@@ -16,13 +16,14 @@ return function NodeSpriteTexture( title, imageURL )
     , _title = ""
     , _imageURL = "/assets/misc/coolface.png"
 
-  function NodeSpriteTexture( title )
+  function NodeSpriteTexture( title, imageURL )
   {
     _canvas = document.createElement('canvas');
     _canvas.width = _width;
     _canvas.height = _height;
 
     _title = title || _title;
+    _imageURL = imageURL || _imageURL; 
 
     _ctx = _canvas.getContext('2d');
     initLayout.call(this);

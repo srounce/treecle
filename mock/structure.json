@@ -1,66 +1,16 @@
 [
   {
-    "name" : "Node0",
+    "name" : "Players",
+    "image" : "/assets/icons/nadal-djokovic.png",
     "children" : [
       {
-        "name" : "Child2",
+        "name" : "Career Statistics",
+        "image" : "/assets/icons/playerstats.png",
         "children" : []
       },
       {
-        "name" : "Child2",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Node1",
-    "children" : [
-      {
-        "name" : "Child2",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Node2",
-    "children" : [
-      {
-        "name" : "Child2",
-        "children" : []
-      },
-      {
-        "name" : "Child2",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Node3",
-    "children" : [
-      {
-        "name" : "Child2",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Node4",
-    "children" : [
-      {
-        "name" : "Child2",
-        "children" : []
-      },
-      {
-        "name" : "Child2",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Node5",
-    "children" : [
-      {
-        "name" : "Child2",
+        "name" : "Match Statistics",
+        "image" : "/assets/icons/moarstats.png",
         "children" : []
       }
     ]

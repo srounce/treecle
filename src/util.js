@@ -7,6 +7,16 @@ define([], function() {
     return Math.min(Math.max(((value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin), outMin), outMax );  
   }
 
+  Util.cartesianToPolar = function()
+  {
+
+  }
+
+  Util.polarToCartesian = function()
+  {
+
+  }
+
   return Util
 
 })

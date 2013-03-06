@@ -32,7 +32,8 @@ return function Node( structure )
   
   function Node( structure )
   {
-    _diffuse = new NodeSpriteTexture(structure.name);
+    var imgURL = structure.image || null
+    _diffuse = new NodeSpriteTexture(structure.name, imgURL);
     _material = new THREE.ShaderMaterial({
       uniforms        : {
         diffuse : { type: "t", value : _diffuse.map }
