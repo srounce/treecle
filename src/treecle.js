@@ -34,7 +34,7 @@ return function TreecleApp( structDef )
     if ( !Detector.webgl ) Detector.addGetWebGLMessage();
 
     _camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
-    _camera.position.set(0, 0, -250);
+    _camera.position.set(100, 100, -250);
     _camera.lookAt( _camTarget );
 
     EventManager.setCamera( _camera );
@@ -52,6 +52,7 @@ return function TreecleApp( structDef )
     if( frame.valid ) {
       if( Boolean(_diffFrame) === false ) {
         _diffFrame = frame
+        console.log('new _diffFrame')
       }
 
       var _lmRotate = { 
@@ -63,22 +64,20 @@ return function TreecleApp( structDef )
       var frameTrans = _diffFrame.translation(frame);
       var camRadius = _camera.position.distanceTo(_camTarget);
 
-      _sceneRotX = frameTrans[0];
+      _sceneRotX = frameTrans[0] * radian;
 
       _sceneCurY = Util.map(frameTrans[1], -300, 300, 0, 180);
-      _sceneRotY = -(_sceneCurY)
+      _sceneRotY = -(_sceneCurY) * radian
 
-      _lmRotate.x = _rootScene.position.x + camRadius * Math.sin(_sceneRotY * radian) * Math.cos(_sceneRotX * radian) * _lmVelocityScale;
-      _lmRotate.y = _rootScene.position.y + camRadius * Math.sin(_sceneRotY * radian) * Math.sin(_sceneRotX * radian) * _lmVelocityScale;
-      _lmRotate.z = _rootScene.position.z + camRadius * Math.cos(_sceneRotY * radian) * _lmVelocityScale;
+      _lmRotate.x = _camTarget.x + camRadius * Math.sin(_sceneRotY) * Math.cos(_sceneRotX) * _lmVelocityScale;
+      _lmRotate.y = _camTarget.y + camRadius * Math.sin(_sceneRotY) * Math.sin(_sceneRotX) * _lmVelocityScale;
+      _lmRotate.z = _camTarget.z + camRadius * Math.cos(_sceneRotY) * _lmVelocityScale;
 
-      _camera.rotation.setX( _lmRotate.x );
-      _camera.rotation.setY( _lmRotate.y );
-      _camera.rotation.setZ( _lmRotate.z );
+      _camera.position.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
     }
 
     _camera.updateProjectionMatrix();
-    _camera.target.position.copy(_camTarget);
+    _camera.lookAt(_camTarget);
 
     this.render.call(this, frame);
   }
