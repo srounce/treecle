@@ -25,6 +25,8 @@ return function TreecleApp( structDef )
     , _camTarget = new THREE.Vector3()
     , radian = Math.PI / 180
 
+    var _sceneRotY = 90, _sceneRotX = 0, _sceneCurY = 0
+
   function TreecleApp( sceneDef )
   {
     if ( !structDef ) sceneDef = {};
@@ -32,8 +34,8 @@ return function TreecleApp( structDef )
     if ( !Detector.webgl ) Detector.addGetWebGLMessage();
 
     _camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
-    _camera.position.set(100, 100, -100);
-    _camera.lookAt(new THREE.Vector3(0, 0, 0));
+    _camera.position.set(0, 0, -250);
+    _camera.lookAt( _camTarget );
 
     EventManager.setCamera( _camera );
 
@@ -47,30 +49,36 @@ return function TreecleApp( structDef )
 
   TreecleApp.prototype.update = function( frame )
   {
-    var _lmRotate = { x : 0, y : 0, z :0 }
-
     if( frame.valid ) {
-      if( _diffFrame ===  null ) {
+      if( Boolean(_diffFrame) === false ) {
         _diffFrame = frame
       }
-      var frameTrans = _diffFrame.translation(frame)
-      var camRadius = _camera.position.distanceTo(_camTarget)
 
-      //console.log( frame.hands.palmVelocity );
-//if(frameTrans[0] > 0) {
-  //console.log(frameTrans[0]
-             //,frameTrans[1]
-             //,frameTrans[2])
-//}
-      var rotX = frameTrans[0]
-      var rotY = -( Util.map(frameTrans[0], -300, 300, -179, 180) )
+      var _lmRotate = { 
+        x : 0
+      , y : 0
+      , z : 0 
+      }
 
-      _lmRotate.x = camRadius * Math.sin(rotY * radian) * Math.cos(rotX * radian)
-      _lmRotate.z = camRadius * Math.sin(rotX * radian) * Math.cos(rotY * radian)
-      _lmRotate.y = camRadius * Math.cos(rotY * radian)
+      var frameTrans = _diffFrame.translation(frame);
+      var camRadius = _camera.position.distanceTo(_camTarget);
 
-      _camera.rotation.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
+      _sceneRotX = frameTrans[0];
+
+      _sceneCurY = Util.map(frameTrans[1], -300, 300, 0, 180);
+      _sceneRotY = -(_sceneCurY)
+
+      _lmRotate.x = _rootScene.position.x + camRadius * Math.sin(_sceneRotY * radian) * Math.cos(_sceneRotX * radian) * _lmVelocityScale;
+      _lmRotate.y = _rootScene.position.y + camRadius * Math.sin(_sceneRotY * radian) * Math.sin(_sceneRotX * radian) * _lmVelocityScale;
+      _lmRotate.z = _rootScene.position.z + camRadius * Math.cos(_sceneRotY * radian) * _lmVelocityScale;
+
+      _camera.rotation.setX( _lmRotate.x );
+      _camera.rotation.setY( _lmRotate.y );
+      _camera.rotation.setZ( _lmRotate.z );
     }
+
+    _camera.updateProjectionMatrix();
+    _camera.target.position.copy(_camTarget);
 
     this.render.call(this, frame);
   }
