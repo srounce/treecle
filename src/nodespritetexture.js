@@ -51,7 +51,8 @@ return function NodeSpriteTexture( title, imageURL )
     gradient.addColorStop(0, '#1e3048');
     gradient.addColorStop(1, '#122032');
 
-    _ctx.strokeStyle = "#FFF200";
+    _ctx.strokeStyle = "#FFFFFF";
+    //_ctx.strokeStyle = "#FFF200";
 
     _ctx.fillStyle = gradient;
 
@@ -80,9 +81,8 @@ return function NodeSpriteTexture( title, imageURL )
     _ctx.moveTo(centerX, 5)
     _ctx.fillStyle = '#FFFFFF';
     _ctx.textAlign = 'right';
-    _ctx.font = 'bold 56px Helvetica Neue, Calibri, sans-serif';
-    //_ctx.fillText(_title, centerX, 192)
-    drawText(_ctx, _title, (centerX - (centerX/3) - 24), centerY - (radius + 32), radius);
+    _ctx.font = 'bold 56px \'Roboto Condensed\', Calibri, sans-serif';
+    drawText(_ctx, _title, (centerX - (centerX/3) - 32), centerY - (radius + 32), radius);
     _ctx.fillStyle = 'transparent';
   }
 

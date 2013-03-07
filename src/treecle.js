@@ -25,7 +25,7 @@ return function TreecleApp( structDef )
     , _camTarget = new THREE.Vector3()
     , radian = Math.PI / 180
 
-    var _sceneRotY = 90, _sceneRotX = 0, _sceneCurY = 0
+    var _sceneRotY = 45, _sceneRotX = _sceneCurY = 0
 
   function TreecleApp( sceneDef )
   {
@@ -66,7 +66,7 @@ return function TreecleApp( structDef )
 
       _sceneRotX = frameTrans[0] * radian;
 
-      _sceneCurY = Util.map(frameTrans[1], -300, 300, 0, 179);
+      _sceneCurY = Util.map(frameTrans[2], 300, -300, 0, 179);
       _sceneRotY = -(_sceneCurY) * radian;
 
       _lmRotate.x = _camTarget.x * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.cos(_sceneRotX);
