@@ -20,7 +20,6 @@ const SIZE = 50;
 
 var sooper = THREE.Mesh;
 var _geometry = new THREE.PlaneGeometry(SIZE, SIZE, 4, 4)
-  , _dummytex = THREE.ImageUtils.loadTexture('/assets/misc/coolface.png')
 
 return function Node( structure )
 {
@@ -33,7 +32,7 @@ return function Node( structure )
   function Node( structure )
   {
     var imgURL = structure.image || null
-    _diffuse = new NodeSpriteTexture(structure.name, imgURL);
+    _diffuse = new NodeSpriteTexture(structure.name, structure.image);
     _material = new THREE.ShaderMaterial({
       uniforms        : {
         diffuse : { type: "t", value : _diffuse.map }

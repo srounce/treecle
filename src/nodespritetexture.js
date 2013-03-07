@@ -16,7 +16,7 @@ return function NodeSpriteTexture( title, imageURL )
     , _title = ""
     , _imageURL = "/assets/misc/coolface.png"
 
-  function NodeSpriteTexture( title, imageURL )
+  var NodeSpriteTexture = function( title, imageURL )
   {
     _canvas = document.createElement('canvas');
     _canvas.width = _width;
@@ -24,7 +24,7 @@ return function NodeSpriteTexture( title, imageURL )
 
     _title = title || _title;
     _imageURL = imageURL || _imageURL; 
-
+//console.log(_imageURL)
     _ctx = _canvas.getContext('2d');
     initLayout.call(this);
     _texture = new THREE.Texture(_canvas);
@@ -79,23 +79,50 @@ return function NodeSpriteTexture( title, imageURL )
     _ctx.lineWidth = 7;
     _ctx.stroke();
 
+    _ctx.moveTo(centerX, 5)
     _ctx.fillStyle = '#FFFFFF';
-//  _ctx.textAlign = 'right';
+    _ctx.textAlign = 'right';
     _ctx.font = 'bold 48px Helvetica Neue, Calibri, sans-serif';
-    _ctx.fillText(_title, 32, 192);
+    //_ctx.fillText(_title, centerX, 192)
+    drawText(_ctx, _title, centerX - 32, centerX, 192)
   }
 
-  function drawPolygon( _ctx, sides, radius, centerX, centerY )
+  function drawText( ctx, text, maxWidth, x, y )
   {
-    _ctx.moveTo(centerX + radius * Math.cos(0), centerY + radius * Math.sin(0));
+    var outBuf = ""
+      , _text = text || ""
+      , _maxWidth = maxWidth || ctx.width + x
+      , _x = x || 0
+      , _y = y || 0
+      , wordList = text.split(/[\s\r]/g)
+      , _lineHeight = parseInt( parseInt(ctx.font) * 1.2 )
+
+    wordList.forEach(function( word, index ) {
+      var doWrap
+
+      _x += ctx.measureText(word).width
+      doWrap = _x > _maxWidth
+
+      if( doWrap ) {
+        _x = x
+        _y += _lineHeight
+      }
+
+      ctx.fillText( word, _x, _y )
+    })
+  }
+
+  function drawPolygon( ctx, sides, radius, centerX, centerY )
+  {
+    ctx.moveTo(centerX + radius * Math.cos(0), centerY + radius * Math.sin(0));
 
     for(var i=1, MAX=sides; i <= MAX; i++) {
       angle = i * Math.TAU / MAX;
-      _ctx.lineTo( centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle) );
+      ctx.lineTo( centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle) );
     }
   }
 
-  return new NodeSpriteTexture(title);
+  return new NodeSpriteTexture(title, imageURL);
 
 }
 

@@ -66,7 +66,7 @@ return function TreecleApp( structDef )
 
       _sceneRotX = frameTrans[0] * radian;
 
-      _sceneCurY = Util.map(frameTrans[1], -300, 300, 0, 180);
+      _sceneCurY = Util.map(frameTrans[1], -300, 300, 0, 179);
       _sceneRotY = -(_sceneCurY) * radian;
 
       _lmRotate.x = _camTarget.x * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.cos(_sceneRotX);
@@ -76,7 +76,6 @@ return function TreecleApp( structDef )
       _camera.position.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
     }
 
-    //_camera.updateProjectionMatrix();
     _camera.lookAt(_camTarget);
 
     this.render.call(this, frame);
