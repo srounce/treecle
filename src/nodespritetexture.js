@@ -82,9 +82,9 @@ return function NodeSpriteTexture( title, imageURL )
     _ctx.moveTo(centerX, 5)
     _ctx.fillStyle = '#FFFFFF';
     _ctx.textAlign = 'right';
-    _ctx.font = 'bold 48px Helvetica Neue, Calibri, sans-serif';
+    _ctx.font = 'bold 36px Helvetica Neue, Calibri, sans-serif';
     //_ctx.fillText(_title, centerX, 192)
-    drawText(_ctx, _title, centerX - 32, centerX, 192)
+    drawText(_ctx, _title, centerX, centerX - 116, 146)
   }
 
   function drawText( ctx, text, maxWidth, x, y )
