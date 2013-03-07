@@ -4,12 +4,44 @@
     "image" : "/assets/icons/nadal-djokovic.png",
     "children" : [
       {
-        "name" : "Career\nStatistics",
+        "name" : "Career Statistics",
         "image" : "/assets/icons/playerstats.png",
         "children" : []
       },
       {
-        "name" : "Match\nStatistics",
+        "name" : "Match Statistics",
+        "image" : "/assets/icons/moarstats.png",
+        "children" : []
+      }
+    ]
+  },
+  {
+    "name" : "Rafa Nadal",
+    "image" : "/assets/icons/nadal.png",
+    "children" : [
+      {
+        "name" : "Career Statistics",
+        "image" : "/assets/icons/playerstats.png",
+        "children" : []
+      },
+      {
+        "name" : "Match Statistics",
+        "image" : "/assets/icons/moarstats.png",
+        "children" : []
+      }
+    ]
+  },
+  {
+    "name" : "Novak Djokovic",
+    "image" : "/assets/icons/djokovic.png",
+    "children" : [
+      {
+        "name" : "Career Statistics",
+        "image" : "/assets/icons/playerstats.png",
+        "children" : []
+      },
+      {
+        "name" : "Match Statistics",
         "image" : "/assets/icons/moarstats.png",
         "children" : []
       }
@@ -20,12 +52,12 @@
     "image" : "/assets/icons/nadal-djokovic.png",
     "children" : [
       {
-        "name" : "Career\nStatistics",
+        "name" : "Career Statistics",
         "image" : "/assets/icons/playerstats.png",
         "children" : []
       },
       {
-        "name" : "Match\nStatistics",
+        "name" : "Match Statistics",
         "image" : "/assets/icons/moarstats.png",
         "children" : []
       }
@@ -36,12 +68,12 @@
     "image" : "/assets/icons/nadal-djokovic.png",
     "children" : [
       {
-        "name" : "Career\nStatistics",
+        "name" : "Career Statistics",
         "image" : "/assets/icons/playerstats.png",
         "children" : []
       },
       {
-        "name" : "Match\nStatistics",
+        "name" : "Match Statistics",
         "image" : "/assets/icons/moarstats.png",
         "children" : []
       }
@@ -52,44 +84,12 @@
     "image" : "/assets/icons/nadal-djokovic.png",
     "children" : [
       {
-        "name" : "Career\nStatistics",
+        "name" : "Career Statistics",
         "image" : "/assets/icons/playerstats.png",
         "children" : []
       },
       {
-        "name" : "Match\nStatistics",
-        "image" : "/assets/icons/moarstats.png",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Players",
-    "image" : "/assets/icons/nadal-djokovic.png",
-    "children" : [
-      {
-        "name" : "Career\nStatistics",
-        "image" : "/assets/icons/playerstats.png",
-        "children" : []
-      },
-      {
-        "name" : "Match\nStatistics",
-        "image" : "/assets/icons/moarstats.png",
-        "children" : []
-      }
-    ]
-  },
-  {
-    "name" : "Players",
-    "image" : "/assets/icons/nadal-djokovic.png",
-    "children" : [
-      {
-        "name" : "Career\nStatistics",
-        "image" : "/assets/icons/playerstats.png",
-        "children" : []
-      },
-      {
-        "name" : "Match\nStatistics",
+        "name" : "Match Statistics",
         "image" : "/assets/icons/moarstats.png",
         "children" : []
       }
