@@ -44,7 +44,7 @@ return function NodeSpriteTexture( title, imageURL )
   {
     var centerX = _width / 2
       , centerY = _height / 2
-      , radius = centerX / 1.5
+      , radius = centerX / 2
       , angle
       , gradient = _ctx.createLinearGradient(0, centerY/2, 0, _height);
 
@@ -65,7 +65,7 @@ return function NodeSpriteTexture( title, imageURL )
       _ctx.closePath();
       _ctx.fill();
 
-      _ctx.drawImage(img, centerX/2, centerY/2, _width - centerX, _height - centerY);
+      _ctx.drawImage(img, centerX/2, centerY/2, radius * 2, radius * 2);
       _texture.needsUpdate = true;
     }
     img.src = _imageURL;
@@ -78,11 +78,11 @@ return function NodeSpriteTexture( title, imageURL )
     _ctx.stroke();
 
     _ctx.moveTo(centerX, 5)
-    _ctx.fillStyle = '#FFFF2F';
+    _ctx.fillStyle = '#FFFFFF';
     _ctx.textAlign = 'right';
-    _ctx.font = 'bold 36px Helvetica Neue, Calibri, sans-serif';
+    _ctx.font = 'bold 56px Helvetica Neue, Calibri, sans-serif';
     //_ctx.fillText(_title, centerX, 192)
-    drawText(_ctx, _title, (centerX - (centerX/3) - 24), centerX - 116, 146);
+    drawText(_ctx, _title, (centerX - (centerX/3) - 24), centerY - (radius + 32), radius);
     _ctx.fillStyle = 'transparent';
   }
 
