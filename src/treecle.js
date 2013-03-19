@@ -4,6 +4,11 @@ define([
 , 'anaglyphpostprocess'
 , 'util'
 , '<lib/three>'
+, '<lib/three-extra/effectcomposer>'
+, '<lib/three-extra/copyshader>'
+, '<lib/three-extra/shaderpass>'
+, '<lib/three-extra/renderpass>'
+, '<lib/three-extra/maskpass>'
 , 'lib/detector'
 , '<lib/leapjs>'
 ], function(
@@ -12,6 +17,11 @@ define([
 , AnaglyphPostProcessShader
 , Util
 , _THREE
+, _THREEEffectComposer
+, _THREECopyShader
+, _THREEShaderPass
+, _THREERenderPass
+, _THREEMaskPass
 , _Detector
 , _leapjs
 ){
@@ -74,12 +84,14 @@ return function TreecleApp( structDef )
 
       _lmRotate.x = _camTarget.x * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.cos(_sceneRotX);
       _lmRotate.z = _camTarget.y * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.sin(_sceneRotX);
-      //_lmRotate.y = _camTarget.z * _lmVelocityScale + camRadius * Math.cos(_sceneRotY);
+      _lmRotate.y = _camTarget.z * _lmVelocityScale + camRadius * Math.cos(_sceneRotY);
       
-      _camera.fov = 80 + (frameTrans[1] / 10)
+      _camera.fov = Util.map(frameTrans[1], 300, -300, 75, 110)
 
       _camera.position.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
     }
+
+    _camera.updateProjectionMatrix();
 
     _camera.lookAt(_camTarget);
 
@@ -88,8 +100,8 @@ return function TreecleApp( structDef )
 
   TreecleApp.prototype.render = function( frame )
   {
-    //_renderer.render(_rootScene, _camera);
-    _fxComposer.render();
+    _renderer.render(_rootScene, _camera);
+    //_fxComposer.render();
   }
 
   function initEvents()
