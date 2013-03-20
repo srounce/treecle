@@ -11,6 +11,7 @@ define([
 return {
   uniforms : {
     "eyeDist" : { t : "f", value : 5 }
+  , "tDiffuse" : { t : "t", value : 0, texture : null }
   }
 , vertexShader : vertexShader
 , fragmentShader : fragmentShader

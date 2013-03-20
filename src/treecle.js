@@ -79,14 +79,14 @@ return function TreecleApp( structDef )
 
       _sceneRotX = frameTrans[0] * radian;
 
-      _sceneCurY = Util.map(frameTrans[2], 300, -300, 0, 179);
+      _sceneCurY = Util.map(frameTrans[2], -300, 300, 0, 179);
       _sceneRotY = -(_sceneCurY) * radian;
 
       _lmRotate.x = _camTarget.x * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.cos(_sceneRotX);
       _lmRotate.z = _camTarget.y * _lmVelocityScale + camRadius * Math.sin(_sceneRotY) * Math.sin(_sceneRotX);
       _lmRotate.y = _camTarget.z * _lmVelocityScale + camRadius * Math.cos(_sceneRotY);
       
-      _camera.fov = Util.map(frameTrans[1], 300, -300, 75, 110)
+      _camera.fov = Util.map(frameTrans[1], -100, 300, 75, 100)
 
       _camera.position.set( _lmRotate.x, _lmRotate.y, _lmRotate.z );
     }
@@ -100,8 +100,9 @@ return function TreecleApp( structDef )
 
   TreecleApp.prototype.render = function( frame )
   {
+    _fxComposer.render();
+
     _renderer.render(_rootScene, _camera);
-    //_fxComposer.render();
   }
 
   function initEvents()
@@ -112,7 +113,7 @@ return function TreecleApp( structDef )
 
   function initRenderer()
   {
-    //var anaglyphEffect = new THREE.ShaderPass(AnaglyphPostProcessShader);
+    var anaglyphEffect;
 
     _renderer = new THREE.WebGLRenderer({
       antialias: true
@@ -121,10 +122,12 @@ return function TreecleApp( structDef )
 
     _fxComposer = new THREE.EffectComposer(_renderer);
     _fxComposer.addPass(new THREE.RenderPass(_rootScene, _camera));
+
+    anaglyphEffect = new THREE.ShaderPass(AnaglyphPostProcessShader);
+    anaglyphEffect.renderToScreen = true;
+    _fxComposer.addPass(anaglyphEffect);
     
-    document.body.appendChild(
-      this.domElement = _renderer.domElement
-    );
+    document.body.appendChild(this.domElement = _renderer.domElement);
     this.domElement.style.position = 'absolute';
   }
 
